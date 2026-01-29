@@ -3,7 +3,6 @@
 import { useEffect, useRef } from "react";
 
 export default function ErrorReporter({ error, reset }) {
-  /* ─ instrumentation shared by every route ─ */
   const lastOverlayMsg = useRef("");
   const pollRef = useRef();
 
@@ -24,7 +23,7 @@ export default function ErrorReporter({ error, reset }) {
           colno: e.colno,
           source: "window.onerror",
         },
-        timestamp.now(),
+        timestamp: Date.now(),
       });
 
     const onReject = (e) =>
@@ -35,7 +34,7 @@ export default function ErrorReporter({ error, reset }) {
           stack: e.reason?.stack,
           source: "unhandledrejection",
         },
-        timestamp.now(),
+        timestamp: Date.now(),
       });
 
     const pollOverlay = () => {
@@ -50,7 +49,7 @@ export default function ErrorReporter({ error, reset }) {
         send({
           type: "ERROR_CAPTURED",
           error: { message: txt, source: "nextjs-dev-overlay" },
-          timestamp.now(),
+          timestamp: Date.now(),
         });
       }
     };
@@ -66,7 +65,6 @@ export default function ErrorReporter({ error, reset }) {
     };
   }, []);
 
-  /* ─ extra postMessage when on the global-error route ─ */
   useEffect(() => {
     if (!error) return;
     window.parent.postMessage(
@@ -78,17 +76,15 @@ export default function ErrorReporter({ error, reset }) {
           digest: error.digest,
           name: error.name,
         },
-        timestamp.now(),
+        timestamp: Date.now(),
         userAgent: navigator.userAgent,
       },
       "*"
     );
   }, [error]);
 
-  /* ─ ordinary pages render nothing ─ */
   if (!error) return null;
 
-  /* ─ global-error UI ─ */
   return (
     <html>
       <body className="min-h-screen bg-background text-foreground flex items-center justify-center p-4">

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import *  from "@radix-ui/react-tabs";
+import * as Tabs from "@radix-ui/react-tabs";
 import { Info } from "lucide-react";
 
 export default function BMICalculator() {
@@ -18,10 +18,8 @@ export default function BMICalculator() {
 
     let result = 0;
     if (unit === "metric") {
-      // Height in cm to meters
       result = w / ((h / 100) * (h / 100));
     } else {
-      // Imperial: (weight in lbs / (height in inches)^2) * 703
       result = (w / (h * h)) * 703;
     }
 

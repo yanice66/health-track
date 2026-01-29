@@ -29,9 +29,6 @@ const nextConfig = {
   },
   turbopack: {
     rules: {
-      "*.{jsx,tsx}": {
-        loaders: [LOADER]
-      }
     }
   }
 };
